@@ -1,23 +1,20 @@
 package org.exchangerates.datasource.nbp;
 
+import org.exchangerates.model.BankType;
 import org.exchangerates.service.AbstractBankService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NbpService implements AbstractBankService {
-  String BASE_URL = "http://api.nbp.pl/api/exchangerates/tables/";
+public class NbpService extends AbstractBankService {
 
-  @Autowired
-  private NbpParser nbpParser;
-
-  @Override
-  public String getData() {
-    return getType() + " data";
+  public NbpService() {
+    type = BankType.nbp;
+    baseUrl = "http://api.nbp.pl/api/exchangerates/tables/";
+    parser = new NbpParser();
   }
 
   @Override
-  public String getType() {
-    return "nbp";
+  public String getData() {
+    return getType().getCurrency()  + " data";
   }
 }

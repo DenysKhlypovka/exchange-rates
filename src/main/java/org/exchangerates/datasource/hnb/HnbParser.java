@@ -1,9 +1,9 @@
-package org.exchangerates.datasource.nbp;
+package org.exchangerates.datasource.hnb;
 
 import org.exchangerates.service.AbstractParser;
 import org.springframework.stereotype.Service;
 
 @Service
-public class NbpParser extends AbstractParser {
+public class HnbParser extends AbstractParser {
 
 }

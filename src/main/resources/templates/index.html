@@ -1,0 +1,56 @@
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:form="http://www.thymeleaf.org"
+      xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Exchange Rates</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+<select th:field="*{banksList}">
+    <option th:each="i : ${banksList}" th:value="${i}" th:text="${i}">
+    </option>
+</select>
+
+<table>
+    <tbody>
+    <tr>
+        <td>&nbsp;</td>
+        <td>NBP/PLN</td>
+    </tr>
+    <tr>
+        <td>USD&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>EUR</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>PLN&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>HRK&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>CZK&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td>UAH&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

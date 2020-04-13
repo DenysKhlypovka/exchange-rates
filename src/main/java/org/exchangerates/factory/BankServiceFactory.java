@@ -1,6 +1,7 @@
 package org.exchangerates.factory;
 
 
+import org.exchangerates.model.BankType;
 import org.exchangerates.service.AbstractBankService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,14 @@ public class BankServiceFactory {
   @Autowired
   private List<AbstractBankService> services;
 
-  private static final Map<String, AbstractBankService> serviceCache = new HashMap<>();
+  private static final Map<BankType, AbstractBankService> serviceCache = new HashMap<>();
 
   @PostConstruct
   public void init() {
     services.forEach(service -> serviceCache.put(service.getType(), service));
   }
 
-  public static AbstractBankService getService(String type) {
+  public static AbstractBankService getService(BankType type) {
     return Optional.ofNullable(serviceCache.get(type)).orElseThrow(() -> new RuntimeException("Unknown service type: " + type));
   }
 }
