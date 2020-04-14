@@ -1,20 +1,24 @@
 package org.exchangerates.datasource.cnb;
 
 import org.exchangerates.model.BankType;
-import org.exchangerates.service.AbstractBankService;
+import org.exchangerates.service.BankService;
 import org.springframework.stereotype.Service;
 
-@Service
-public class CnbService extends AbstractBankService {
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 
-  public CnbService() {
-    type = BankType.cnb;
+@Service
+public class CnbService extends BankService {
+
+  @PostConstruct
+  public void init() {
     baseUrl = "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/";
-    parser = new CnbParser();
+    type = BankType.cnb;
   }
 
   @Override
-  public String getData() {
-    return getType().getCurrency() + " data3";
+  public BigDecimal test() {
+    return BigDecimal.ZERO;
   }
+
 }

@@ -1,21 +1,23 @@
 package org.exchangerates.datasource.nbu;
 
 import org.exchangerates.model.BankType;
-import org.exchangerates.service.AbstractBankService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.exchangerates.service.BankService;
 import org.springframework.stereotype.Service;
 
-@Service
-public class NbuService extends AbstractBankService {
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 
-  public NbuService() {
-    type = BankType.nbu;
+@Service
+public class NbuService extends BankService {
+  @PostConstruct
+  public void init() {
     baseUrl = "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange";
-    parser = new NbuParser();
+    type = BankType.nbu;
   }
 
   @Override
-  public String getData() {
-    return getType().getCurrency()  + " data3";
+  public BigDecimal test() {
+    return BigDecimal.ZERO;
   }
+
 }

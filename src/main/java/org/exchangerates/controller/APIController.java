@@ -11,6 +11,6 @@ public class APIController {
 
   @GetMapping("/{type}")
   public String getData(@PathVariable BankType type) {
-    return BankServiceFactory.getService(type).getData();
+    return BankServiceFactory.getService(type).test().toString();
   }
 }

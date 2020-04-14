@@ -1,20 +1,22 @@
 package org.exchangerates.datasource.hnb;
 
 import org.exchangerates.model.BankType;
-import org.exchangerates.service.AbstractBankService;
+import org.exchangerates.service.BankService;
 import org.springframework.stereotype.Service;
 
-@Service
-public class HnbService extends AbstractBankService {
+import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
 
-  public HnbService() {
-    type = BankType.hnb;
+@Service
+public class HnbService extends BankService {
+  @PostConstruct
+  public void init() {
     baseUrl = "http://api.hnb.hr/tecajn/v2/";
-    parser = new HnbParser();
+    type = BankType.hnb;
   }
 
   @Override
-  public String getData() {
-    return getType().getCurrency() + " data2";
+  public BigDecimal test() {
+    return BigDecimal.ZERO;
   }
 }
