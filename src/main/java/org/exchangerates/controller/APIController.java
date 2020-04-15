@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class APIController {
 
-  @GetMapping("/{type}")
-  public String getData(@PathVariable BankType type) {
-    return BankServiceFactory.getService(type).test().toString();
+  @GetMapping("/bank-data/{bankType}")
+  public String getData(@PathVariable String bankType) {
+    return BankServiceFactory.getService(Enum.valueOf(BankType.class, bankType)).test().toString();
   }
 }
