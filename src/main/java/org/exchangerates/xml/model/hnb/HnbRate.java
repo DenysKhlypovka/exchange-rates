@@ -12,7 +12,7 @@ import java.math.RoundingMode;
 import java.util.Date;
 
 public class HnbRate implements ExchangeRate {
-  @XmlElement(name="drzava_iso")
+  @XmlElement(name="valuta")
   private String currency;
   @XmlElement(name="jedinica")
   private BigDecimal divider;

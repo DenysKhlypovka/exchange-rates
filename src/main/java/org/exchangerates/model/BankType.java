@@ -1,15 +1,17 @@
 package org.exchangerates.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.exchangerates.xml.model.cnb.CnbRatesTable;
 import org.exchangerates.xml.model.hnb.HnbRatesTable;
 import org.exchangerates.xml.model.nbp.NbpRatesTable;
 import org.exchangerates.xml.model.nbu.NbuRatesTable;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum BankType {
-  nbp(Currency.PLN, NbpRatesTable.class, "http://api.nbp.pl/api/exchangerates/tables/a?format=xml"),
-  hnb(Currency.HRK, HnbRatesTable.class, "http://api.hnb.hr/tecajn/v2?format=xml"),
-  nbu(Currency.UAH, NbuRatesTable.class, "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange"),
-  cnb(Currency.CZK, CnbRatesTable.class, "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml");
+  NBP(Currency.PLN, NbpRatesTable.class, "http://api.nbp.pl/api/exchangerates/tables/a?format=xml"),
+  HNB(Currency.HRK, HnbRatesTable.class, "http://api.hnb.hr/tecajn/v2?format=xml"),
+  NBU(Currency.UAH, NbuRatesTable.class, "https://bank.gov.ua/NBUStatService/v1/statdirectory/exchange"),
+  CNB(Currency.CZK, CnbRatesTable.class, "https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/denni_kurz.xml");
 
   private Currency currency;
   private Class<? extends ExchangeRatesTable> tableClass;
