@@ -1,13 +1,19 @@
 package org.exchangerates;
 
+import org.exchangerates.model.BankType;
+import org.exchangerates.service.BankService;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class AppTest {
+import java.math.BigDecimal;
+import java.util.stream.Stream;
 
-
-  @BeforeAll
-  static void setup(){
-    System.out.println("@BeforeAll executed");
+class AppTest {
+  @Autowired
+  BankService bankService;
+  @Test
+  void shouldConvertZeroKilogramValue() {
+    Assertions.assertEquals(BigDecimal.ZERO, BigDecimal.ONE);
   }
 
   @BeforeEach
@@ -15,30 +21,21 @@ public class AppTest {
     System.out.println("@BeforeEach executed");
   }
 
-  @Tag("DEV")
-  @Test
-  void testCalcOne()
-  {
-    System.out.println("======TEST ONE EXECUTED=======");
-    Assertions.assertEquals( 4 , Math.addExact(2, 2));
-  }
-
   @Tag("PROD")
   @Disabled
   @Test
   void testCalcTwo()
   {
-    System.out.println("======TEST TWO EXECUTED=======");
-    Assertions.assertEquals( 6 , Math.addExact(2, 4));
+    Stream.of(BankType.values()).forEach(bankType -> bankService.getDataFromBank(bankType.name()));
+  }
+
+  @RepeatedTest(3)
+  void shouldAlwaysReturnTheSameValue() {
+    Assertions.assertEquals(new BigDecimal("29.4840").setScale(4), BigDecimal.ONE);
   }
 
   @AfterEach
   void tearThis(){
     System.out.println("@AfterEach executed");
-  }
-
-  @AfterAll
-  static void tear(){
-    System.out.println("@AfterAll executed");
   }
 }

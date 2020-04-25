@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 @Service
 public class BankService {
 
-  public static BankRatesDto getDataFromBank(String bankTypeStr) {
+  public BankRatesDto getDataFromBank(String bankTypeStr) {
     BankType bankType = Enum.valueOf(BankType.class, bankTypeStr);
     Class<? extends ExchangeRatesTable> classType = bankType.getTableClass();
     List<? extends ExchangeRate> rates = classType.cast(parseFromUrl(bankType.getUrl(), classType)).getRates();

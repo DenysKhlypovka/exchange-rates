@@ -11,14 +11,17 @@ import java.util.List;
 @Service
 public class UserService {
   @Autowired
-  UserRepository userRepository;
+  private UserRepository userRepository;
+  @Autowired
+  private EncodingService encodingService;
 
   public List<User> getUsers(){
     return userRepository.getUsers();
   }
 
   public boolean createUser(User user) throws InvalidLoginDataException {
-    return userRepository.createUser(user.getLogin(), user.getPassword());
+    user.setHash(encodingService.encode(user.getPassword()));
+    return userRepository.createUser(user);
   }
 
   public User deleteUser(String login) throws InvalidLoginDataException {
@@ -36,5 +39,9 @@ public class UserService {
 
   public User getUser(Long id) throws InvalidLoginDataException {
     return userRepository.getUser(id);
+  }
+
+  public boolean checkPassword(User user) {
+    return encodingService.checkPassword(user.getPassword(), getUser(user.getLogin()).getHash());
   }
 }

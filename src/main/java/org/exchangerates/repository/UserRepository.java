@@ -20,9 +20,9 @@ public class UserRepository {
     return jdbcTemplate.query("SELECT * FROM user_data ORDER BY id DESC", userMapper);
   }
 
-  public boolean createUser(String userName, String password) throws InvalidLoginDataException {
+  public boolean createUser(User user) throws InvalidLoginDataException {
     try {
-      return jdbcTemplate.update("INSERT INTO user_data (login, password, created_date) VALUES (?, ?, NOW())", userName, password) != 0 ;
+      return jdbcTemplate.update("INSERT INTO user_data (login, hash, email, created_date) VALUES (?, ?, ?, NOW())", user.getLogin(), user.getHash(), user.getEmail()) != 0 ;
     } catch (Exception e) {
       throw new InvalidLoginDataException(e.getMessage());
     }
@@ -51,4 +51,5 @@ public class UserRepository {
       throw new InvalidLoginDataException(e.getMessage());
     }
   }
+  //alter table "user_data" add column email varchar(50)
 }
