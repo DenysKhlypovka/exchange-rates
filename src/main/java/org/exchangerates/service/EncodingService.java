@@ -15,6 +15,10 @@ public class EncodingService {
     passwordEncoder = new BCryptPasswordEncoder();
   }
 
+  public PasswordEncoder getPasswordEncoder() {
+    return passwordEncoder;
+  }
+
   public String encode(String input) {
     return passwordEncoder.encode(input);
   }

@@ -22,7 +22,7 @@ public class UserRepository {
 
   public boolean createUser(User user) throws InvalidLoginDataException {
     try {
-      return jdbcTemplate.update("INSERT INTO user_data (login, hash, email, created_date) VALUES (?, ?, ?, NOW())", user.getLogin(), user.getHash(), user.getEmail()) != 0 ;
+      return jdbcTemplate.update("INSERT INTO user_data (login, hash, email, created_date) VALUES (?, ?, ?, NOW())", user.getLogin(), user.getHash(), user.getEmail()) != 0;
     } catch (Exception e) {
       throw new InvalidLoginDataException(e.getMessage());
     }
@@ -36,12 +36,8 @@ public class UserRepository {
     }
   }
 
-  public User getUser(String login) throws InvalidLoginDataException {
-    try {
-      return jdbcTemplate.queryForObject("SELECT * FROM user_data WHERE login = ? ", new Object[]{login}, userMapper);
-    } catch (Exception e) {
-      throw new InvalidLoginDataException(e.getMessage());
-    }
+  public User getUser(String login) {
+    return jdbcTemplate.query("SELECT * FROM user_data WHERE login = ? ", new Object[]{login}, userMapper).stream().findFirst().orElse(null);
   }
 
   public User getUser(Long id) throws InvalidLoginDataException {

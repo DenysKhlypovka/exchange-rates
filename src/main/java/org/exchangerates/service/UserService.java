@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -15,33 +16,37 @@ public class UserService {
   @Autowired
   private EncodingService encodingService;
 
-  public List<User> getUsers(){
+  public List<User> findAll(){
     return userRepository.getUsers();
   }
 
-  public boolean createUser(User user) throws InvalidLoginDataException {
+  public boolean create(User user) throws InvalidLoginDataException {
+    if (Objects.nonNull(find(user.getLogin()))) {
+      return false;
+    }
     user.setHash(encodingService.encode(user.getPassword()));
     return userRepository.createUser(user);
   }
 
-  public User deleteUser(String login) throws InvalidLoginDataException {
-    return userRepository.deleteUser(getUser(login));
+  public User remove(String login) throws InvalidLoginDataException {
+    return userRepository.deleteUser(find(login));
   }
 
-  public User getUser(String login) {
-    try {
-      return userRepository.getUser(login);
-    } catch (InvalidLoginDataException e) {
-      System.out.println("error");
-      return null;
-    }
+  public User find(String login) {
+    return userRepository.getUser(login);
   }
 
-  public User getUser(Long id) throws InvalidLoginDataException {
+  public User findById(Long id) throws InvalidLoginDataException {
     return userRepository.getUser(id);
   }
 
   public boolean checkPassword(User user) {
-    return encodingService.checkPassword(user.getPassword(), getUser(user.getLogin()).getHash());
+    return encodingService.checkPassword(user.getPassword(), find(user.getLogin()).getHash());
+  }
+
+  public void authenticate(User user) {
+    if (checkPassword(user)) {
+      //generate token
+    }
   }
 }

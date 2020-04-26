@@ -32,7 +32,10 @@ public class HTMLController {
 
   @PostMapping("/user/create-user")
   public String getData(@ModelAttribute User user) throws InvalidLoginDataException {
-    userService.createUser(user);
-    return "create-user";
+    if (userService.create(user)) {
+      return "create-user";
+    } else {
+      return "create-user-error";
+    }
   }
 }
