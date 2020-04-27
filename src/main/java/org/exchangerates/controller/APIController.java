@@ -21,8 +21,8 @@ public class APIController {
     return bankService.getDataFromBank(bankType);
   }
 
-  @GetMapping("/password-check/{login}/{password}")
-  public boolean test(@PathVariable String login, @PathVariable String password) {
-    return userService.checkPassword(new User(login, password));
+  @GetMapping("/password-check/{username}/{password}")
+  public boolean test(@PathVariable String username, @PathVariable String password) {
+    return userService.checkPassword(new User(username, password));
   }
 }

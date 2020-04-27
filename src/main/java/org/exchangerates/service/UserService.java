@@ -4,13 +4,14 @@ import org.exchangerates.exception.InvalidLoginDataException;
 import org.exchangerates.model.User;
 import org.exchangerates.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
   @Autowired
   private UserRepository userRepository;
   @Autowired
@@ -21,19 +22,19 @@ public class UserService {
   }
 
   public boolean create(User user) throws InvalidLoginDataException {
-    if (Objects.nonNull(find(user.getLogin()))) {
+    if (Objects.nonNull(loadUserByUsername(user.getUsername()))) {
       return false;
     }
-    user.setHash(encodingService.encode(user.getPassword()));
+    user.setPassword(encodingService.encode(user.getPassword()));
     return userRepository.createUser(user);
   }
 
-  public User remove(String login) throws InvalidLoginDataException {
-    return userRepository.deleteUser(find(login));
+  public User remove(String username) throws InvalidLoginDataException {
+    return userRepository.deleteUser(loadUserByUsername(username));
   }
 
-  public User find(String login) {
-    return userRepository.getUser(login);
+  public User loadUserByUsername(String username) {
+    return userRepository.getUser(username);
   }
 
   public User findById(Long id) throws InvalidLoginDataException {
@@ -41,12 +42,6 @@ public class UserService {
   }
 
   public boolean checkPassword(User user) {
-    return encodingService.checkPassword(user.getPassword(), find(user.getLogin()).getHash());
-  }
-
-  public void authenticate(User user) {
-    if (checkPassword(user)) {
-      //generate token
-    }
+    return encodingService.checkPassword(user.getPassword(), loadUserByUsername(user.getUsername()).getPassword());
   }
 }

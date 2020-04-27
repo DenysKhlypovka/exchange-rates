@@ -3,6 +3,7 @@ package org.exchangerates.config;
 import org.exchangerates.JwtAuthenticationEntryPoint;
 import org.exchangerates.JwtRequestFilter;
 import org.exchangerates.service.EncodingService;
+import org.exchangerates.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -23,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
   @Autowired
-  private UserDetailsService jwtUserDetailsService;
+  private UserService userService;
   @Autowired
   private JwtRequestFilter jwtRequestFilter;
   @Autowired
@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
   @Autowired
   public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(jwtUserDetailsService).passwordEncoder(encodingService.getPasswordEncoder());
+    auth.userDetailsService(userService).passwordEncoder(encodingService.getPasswordEncoder());
   }
 
   @Bean
@@ -43,6 +43,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity httpSecurity) throws Exception {
     httpSecurity.csrf().disable().authorizeRequests()
+        .antMatchers("/home").permitAll()
+        .antMatchers("/user/create-user").permitAll()
+        .antMatchers("/user/registration").permitAll()
+        .antMatchers("/bank-data").permitAll()
         .antMatchers("/authenticate").permitAll().anyRequest().authenticated()
         .and().exceptionHandling()
         .authenticationEntryPoint(jwtAuthenticationEntryPoint)

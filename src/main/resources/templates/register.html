@@ -5,11 +5,30 @@
     <title>Title</title>
 </head>
 <body>
-<form method="POST" th:action="@{/user/create-user}" th:object="${user}" >
-    <p>Username: <input type="text" th:field="*{login}" /></p>
-    <p>Password: <input type="text" th:field="*{password}" /></p>
-    <p>Email: <input type="text" th:field="*{email}" /></p>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+
+<form method="POST" th:action="@{/user/create-user}" th:object="${user}">
+    <table>
+        <tr>
+            <td>Username:</td>
+            <td><input type="text" th:field="*{username}"/></td>
+            <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type="text" th:field="*{password}"/></td>
+            <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td><input type="text" th:field="*{email}"/></td>
+            <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</td>
+        </tr>
+        <tr>
+            <td>
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
 </form>
 </body>
 </html>
