@@ -21,7 +21,6 @@ public class User implements UserDetails {
   @Size(min = 8, message = "Password length must be at least 8 chars")
   private String password;
 
-  @NotNull
   @Email(message = "Email should be valid")
   private String email;
   private LocalDateTime createdDate;
@@ -79,7 +78,6 @@ public class User implements UserDetails {
   public void setCreatedDate(LocalDateTime createdDate) {
     this.createdDate = createdDate;
   }
-
 
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return Collections.emptyList();
