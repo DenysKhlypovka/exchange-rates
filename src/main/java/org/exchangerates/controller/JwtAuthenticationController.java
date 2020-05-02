@@ -2,7 +2,7 @@ package org.exchangerates.controller;
 
 import org.exchangerates.model.JwtRequest;
 import org.exchangerates.model.JwtResponse;
-import org.exchangerates.model.User;
+import org.exchangerates.model.UserDto;
 import org.exchangerates.service.UserService;
 import org.exchangerates.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +25,8 @@ public class JwtAuthenticationController {
   @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
   public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
     authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-    User user = userService.loadUserByUsername(authenticationRequest.getUsername());
-    String token = jwtTokenUtil.generateToken(user);
+    UserDto userDto = userService.loadUserByUsername(authenticationRequest.getUsername());
+    String token = jwtTokenUtil.generateToken(userDto);
     return ResponseEntity.ok(new JwtResponse(token));
   }
 

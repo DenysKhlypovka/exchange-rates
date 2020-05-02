@@ -1,49 +1,33 @@
 package org.exchangerates.model;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.Collections;
 
-public class User implements UserDetails {
-  private Long id;
+@Entity
+@Table(name = "user_data")
+public class User {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private int id;
 
-  @NotNull
-  @Size(min = 2, message = "Username length must be at least 2 chars")
+  @Column(name = "username")
   private String username;
 
-  @NotNull
-  @Size(min = 8, message = "Password length must be at least 8 chars")
+  @Column(name = "password")
   private String password;
 
-  @Email(message = "Email should be valid")
+  @Column(name = "email")
   private String email;
-  private LocalDateTime createdDate;
 
-  public User() {
-  }
+  @Column(name = "created_date")
+  private LocalDateTime created_date;
 
-  public User(String username, String password) {
-    this.username = username;
-    this.password = password;
-  }
-
-  public User(String username, String password, String email) {
-    this.username = username;
-    this.password = password;
-    this.email = email;
-  }
-
-  public Long getId() {
+  public int getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(int id) {
     this.id = id;
   }
 
@@ -71,31 +55,11 @@ public class User implements UserDetails {
     this.email = email;
   }
 
-  public LocalDateTime getCreatedDate() {
-    return createdDate;
+  public LocalDateTime getCreated_date() {
+    return created_date;
   }
 
-  public void setCreatedDate(LocalDateTime createdDate) {
-    this.createdDate = createdDate;
-  }
-
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.emptyList();
-  }
-
-  public boolean isAccountNonExpired() {
-    return true;
-  }
-
-  public boolean isAccountNonLocked() {
-    return true;
-  }
-
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  public boolean isEnabled() {
-    return true;
+  public void setCreated_date(LocalDateTime created_date) {
+    this.created_date = created_date;
   }
 }

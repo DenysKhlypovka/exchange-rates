@@ -1,7 +1,7 @@
 package org.exchangerates;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import org.exchangerates.model.User;
+import org.exchangerates.model.UserDto;
 import org.exchangerates.service.UserService;
 import org.exchangerates.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +45,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     }
 
     if (Objects.nonNull(username) && Objects.isNull(SecurityContextHolder.getContext().getAuthentication())) {
-      User user = userService.loadUserByUsername(username);
-      if (jwtTokenUtil.validateToken(jwtToken, user)) {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+      UserDto userDto = userService.loadUserByUsername(username);
+      if (jwtTokenUtil.validateToken(jwtToken, userDto)) {
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDto, null, userDto.getAuthorities());
         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
       }

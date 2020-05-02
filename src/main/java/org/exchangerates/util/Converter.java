@@ -1,31 +1,24 @@
 package org.exchangerates.util;
 
+import org.exchangerates.model.User;
+import org.exchangerates.model.UserDto;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 public class Converter {
-  public static BigDecimal stringToBigDecimal(String inputNumber) {
-    try {
-      return new BigDecimal(inputNumber.replaceAll(",", "."));
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
+  @Autowired
+  private static ModelMapper modelMapper;
+
+  public static UserDto convertToDto(User user) {
+    return modelMapper.map(user, UserDto.class);
   }
 
-  public static Date stringToDate(String inputValue) {
-    return stringToDate(inputValue, DateFormat.DD_MM_YYYY_DOT);
-  }
-
-  public static Date stringToDate(String inputValue, DateFormat dateFormat) {
-    try {
-      java.text.DateFormat format = new SimpleDateFormat(dateFormat.getPattern(), Locale.ENGLISH);
-      return format.parse(inputValue);
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return null;
+  public static User convertToEntity(UserDto userDto) {
+    return modelMapper.map(userDto, User.class);
   }
 }

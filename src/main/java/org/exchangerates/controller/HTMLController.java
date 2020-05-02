@@ -3,7 +3,7 @@ package org.exchangerates.controller;
 import org.exchangerates.exception.InvalidLoginDataException;
 import org.exchangerates.model.BankType;
 import org.exchangerates.model.Currency;
-import org.exchangerates.model.User;
+import org.exchangerates.model.UserDto;
 import org.exchangerates.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,16 +29,16 @@ public class HTMLController {
 
   @GetMapping("/user/registration")
   public String getData(Model model) {
-    model.addAttribute("user", new User());
+    model.addAttribute("userDto", new UserDto());
     return "register";
   }
 
   @PostMapping("/user/create-user")
-  public String getData(@Valid @ModelAttribute User user, BindingResult bindingResult) throws InvalidLoginDataException {
+  public String getData(@Valid @ModelAttribute UserDto userDto, BindingResult bindingResult) {
     if (bindingResult.hasErrors()) {
       return "register";
     }
-    if (userService.create(user)) {
+    if (userService.create(userDto)) {
       return "create-user";
     } else {
       return "create-user-error";

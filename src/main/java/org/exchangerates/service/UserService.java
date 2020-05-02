@@ -1,14 +1,16 @@
 package org.exchangerates.service;
 
 import org.exchangerates.exception.InvalidLoginDataException;
-import org.exchangerates.model.User;
+import org.exchangerates.model.UserDto;
 import org.exchangerates.repository.UserRepository;
+import org.exchangerates.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -17,31 +19,27 @@ public class UserService implements UserDetailsService {
   @Autowired
   private EncodingService encodingService;
 
-  public List<User> findAll(){
-    return userRepository.getUsers();
+  public List<UserDto> findAll(){
+    return userRepository.getUsers().stream().map(Converter::convertToDto).collect(Collectors.toList());
   }
 
-  public boolean create(User user) throws InvalidLoginDataException {
-    if (Objects.nonNull(loadUserByUsername(user.getUsername()))) {
+  public boolean create(UserDto userDto) {
+    if (Objects.nonNull(loadUserByUsername(userDto.getUsername()))) {
       return false;
     }
-    user.setPassword(encodingService.encode(user.getPassword()));
-    return userRepository.createUser(user);
+    userDto.setPassword(encodingService.encode(userDto.getPassword()));
+    return userRepository.createUser(Converter.convertToEntity(userDto));
   }
 
-  public User remove(String username) throws InvalidLoginDataException {
-    return userRepository.deleteUser(loadUserByUsername(username));
+  public UserDto loadUserByUsername(String username) {
+    return Converter.convertToDto(userRepository.getUser(username));
   }
 
-  public User loadUserByUsername(String username) {
-    return userRepository.getUser(username);
+  public UserDto findById(Long id) throws InvalidLoginDataException {
+    return Converter.convertToDto(userRepository.getUser(id));
   }
 
-  public User findById(Long id) throws InvalidLoginDataException {
-    return userRepository.getUser(id);
-  }
-
-  public boolean checkPassword(User user) {
-    return encodingService.checkPassword(user.getPassword(), loadUserByUsername(user.getUsername()).getPassword());
+  public boolean checkPassword(UserDto userDto) {
+    return encodingService.checkPassword(userDto.getPassword(), loadUserByUsername(userDto.getUsername()).getPassword());
   }
 }

@@ -1,10 +1,11 @@
 package org.exchangerates.repository;
 
-import org.exchangerates.exception.InvalidLoginDataException;
-import org.exchangerates.mapper.UserMapper;
 import org.exchangerates.model.User;
+import org.exchangerates.service.HibernateSessionService;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,47 +13,56 @@ import java.util.List;
 @Repository
 public class UserRepository {
   @Autowired
-  private JdbcTemplate jdbcTemplate;
+  private HibernateSessionService hibernateSessionService;
 
-  private static UserMapper userMapper = new UserMapper();
+  private final Class ENTITY_CLASS = User.class;
+  private final String TABLE_NAME = "user_data";
 
   public List<User> getUsers() {
-    return jdbcTemplate.query("SELECT * FROM user_data ORDER BY id DESC", userMapper);
-  }
-
-  public boolean createUser(User user) throws InvalidLoginDataException {
-    try {
-      return jdbcTemplate.update("INSERT INTO user_data (username, password, email, created_date) VALUES (?, ?, ?, NOW())", user.getUsername(), user.getPassword(), user.getEmail()) != 0;
-    } catch (Exception e) {
-      throw new InvalidLoginDataException(e.getMessage());
+    try (Session session = hibernateSessionService.getSessionFactory(ENTITY_CLASS).openSession()) {
+      return session.createQuery("FROM " + TABLE_NAME, ENTITY_CLASS).list();
     }
   }
 
-  public User deleteUser(User user) throws InvalidLoginDataException {
-    try {
-      return jdbcTemplate.update("DELETE FROM user_data WHERE id = ? ", user.getId()) != 0 ? user : null;
+  public boolean createUser(User user) {
+    Transaction transaction = null;
+    try (Session session = hibernateSessionService.getSessionFactory(ENTITY_CLASS).openSession()) {
+      transaction = session.beginTransaction();
+      session.save(user);
+      transaction.commit();
+      return true;
     } catch (Exception e) {
-      throw new InvalidLoginDataException(e.getMessage());
+      if (transaction != null) {
+        transaction.rollback();
+      }
+      e.printStackTrace();
     }
+    return false;
   }
 
   public User getUser(String username) {
-    return jdbcTemplate.query("SELECT * FROM user_data WHERE username = ? ", new Object[]{username}, userMapper).stream().findFirst().orElse(null);
-  }
-
-  public User getUser(Long id) throws InvalidLoginDataException {
-    try {
-      return jdbcTemplate.queryForObject("SELECT * FROM user_data WHERE id = ? ", new Object[]{id}, userMapper);
-    } catch (Exception e) {
-      throw new InvalidLoginDataException(e.getMessage());
+    try (Session session = hibernateSessionService.getSessionFactory(ENTITY_CLASS).openSession()) {
+      Query query=session.createQuery("FROM " + TABLE_NAME + " WHERE username=:username", ENTITY_CLASS);
+      query.setParameter("username", username);
+      query.executeUpdate();
+      return ((User)query.list().stream().findFirst().orElse(null));
     }
   }
-  //CREATE TABLE user_data (
-  //   ID serial PRIMARY KEY,
-  //   username VARCHAR (255) NOT NULL,
-  //   password VARCHAR (255) NOT NULL,
-  //	 created_date TIMESTAMP NOT NULL,
-  //    email varchar(50)
-  //);
-  //ALTER TABLE user_data ADD CONSTRAINT unique_login UNIQUE (username);
+
+  public User getUser(Long id) {
+    try (Session session = hibernateSessionService.getSessionFactory(ENTITY_CLASS).openSession()) {
+      Query query=session.createQuery("FROM " + TABLE_NAME + " WHERE id=:id", ENTITY_CLASS);
+      query.setParameter("id", id);
+      query.executeUpdate();
+      return ((User)query.list().stream().findFirst().orElse(null));
+    }
+  }
 }
+//CREATE TABLE user_data (
+//   ID serial PRIMARY KEY,
+//   username VARCHAR (255) NOT NULL,
+//   password VARCHAR (255) NOT NULL,
+//	 created_date TIMESTAMP NOT NULL,
+//    email varchar(50)
+//);
+//ALTER TABLE user_data ADD CONSTRAINT unique_login UNIQUE (username);
