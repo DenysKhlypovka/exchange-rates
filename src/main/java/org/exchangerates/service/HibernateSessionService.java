@@ -1,16 +1,15 @@
 package org.exchangerates.service;
 
 
-import java.util.Properties;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Properties;
 
 @Service
 public class HibernateSessionService {
@@ -37,7 +36,6 @@ public class HibernateSessionService {
         settings.put(Environment.PASS, password);
         settings.put(Environment.SHOW_SQL, "true");
         settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-        settings.put(Environment.HBM2DDL_AUTO, "create-drop");
         configuration.setProperties(settings);
         configuration.addAnnotatedClass(entityClass);
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()

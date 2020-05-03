@@ -18,7 +18,8 @@ public class APIController {
 
   @GetMapping("/bank-data/{bankType}")
   public BankRatesDto getData(@PathVariable String bankType) {
-    return bankService.getDataFromBank(bankType);
+    bankService.setBankType(bankType);
+    return bankService.getCurrentRates();
   }
 
   @GetMapping("/password-check/{username}/{password}")

@@ -3,22 +3,16 @@ package org.exchangerates.util;
 import org.exchangerates.model.User;
 import org.exchangerates.model.UserDto;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Optional;
 
 public class Converter {
-  @Autowired
-  private static ModelMapper modelMapper;
 
   public static UserDto convertToDto(User user) {
-    return modelMapper.map(user, UserDto.class);
+    return Optional.ofNullable(user).map(userToConvert -> new ModelMapper().map(userToConvert, UserDto.class)).orElse(null);
   }
 
   public static User convertToEntity(UserDto userDto) {
-    return modelMapper.map(userDto, User.class);
+    return Optional.ofNullable(userDto).map(userDtoToConvert -> new ModelMapper().map(userDtoToConvert, User.class)).orElse(null);
   }
 }

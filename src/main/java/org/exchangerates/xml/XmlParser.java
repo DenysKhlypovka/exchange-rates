@@ -7,10 +7,10 @@ import javax.xml.bind.JAXBContext;
 import java.net.URL;
 
 public class XmlParser {
-  public static <T> Object parseFromUrl(String Url, Class<T> parameterClass) {
+  public static <T> Object parseFromUrl(String urlStr, Class<T> parameterClass) {
     try {
       var jaxbContext = JAXBContext.newInstance(parameterClass);
-      var url = new URL(Url);
+      var url = new URL(urlStr);
       var jaxbUnmarshaller = jaxbContext.createUnmarshaller();
       jaxbUnmarshaller.setAdapter(DateAdapterDash.class, new DateAdapterDash());
       return parameterClass.cast(jaxbUnmarshaller.unmarshal(new InputSource(url.openStream())));

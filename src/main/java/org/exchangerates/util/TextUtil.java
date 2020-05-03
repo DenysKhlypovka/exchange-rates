@@ -3,8 +3,11 @@ package org.exchangerates.util;
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Random;
 
 public class TextUtil {
@@ -35,5 +38,9 @@ public class TextUtil {
       e.printStackTrace();
     }
     return null;
+  }
+
+  public static String localDateToString(LocalDate date, String format) {
+    return Optional.ofNullable(date).map(dateToFormat -> dateToFormat.format(DateTimeFormatter.ofPattern(format))).orElse(null);
   }
 }

@@ -16,7 +16,7 @@ public class UserRepository {
   private HibernateSessionService hibernateSessionService;
 
   private final Class ENTITY_CLASS = User.class;
-  private final String TABLE_NAME = "user_data";
+  private final String TABLE_NAME = ENTITY_CLASS.getSimpleName();
 
   public List<User> getUsers() {
     try (Session session = hibernateSessionService.getSessionFactory(ENTITY_CLASS).openSession()) {
@@ -42,19 +42,17 @@ public class UserRepository {
 
   public User getUser(String username) {
     try (Session session = hibernateSessionService.getSessionFactory(ENTITY_CLASS).openSession()) {
-      Query query=session.createQuery("FROM " + TABLE_NAME + " WHERE username=:username", ENTITY_CLASS);
+      Query query = session.createQuery("FROM " + TABLE_NAME + " WHERE username=:username", ENTITY_CLASS);
       query.setParameter("username", username);
-      query.executeUpdate();
-      return ((User)query.list().stream().findFirst().orElse(null));
+      return ((User) query.list().stream().findFirst().orElse(null));
     }
   }
 
   public User getUser(Long id) {
     try (Session session = hibernateSessionService.getSessionFactory(ENTITY_CLASS).openSession()) {
-      Query query=session.createQuery("FROM " + TABLE_NAME + " WHERE id=:id", ENTITY_CLASS);
+      Query query = session.createQuery("FROM " + TABLE_NAME + " WHERE id=:id", ENTITY_CLASS);
       query.setParameter("id", id);
-      query.executeUpdate();
-      return ((User)query.list().stream().findFirst().orElse(null));
+      return ((User) query.list().stream().findFirst().orElse(null));
     }
   }
 }

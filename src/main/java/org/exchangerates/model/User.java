@@ -23,6 +23,10 @@ public class User {
   @Column(name = "created_date")
   private LocalDateTime created_date;
 
+  public User() {
+    created_date = LocalDateTime.now();
+  }
+
   public int getId() {
     return id;
   }
