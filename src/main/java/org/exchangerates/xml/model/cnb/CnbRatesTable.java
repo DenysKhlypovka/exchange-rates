@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -15,12 +16,12 @@ import java.util.Date;
 public class CnbRatesTable implements ExchangeRatesTable {
   @XmlAttribute(name = "datum")
   @XmlJavaTypeAdapter(DateAdapterDot.class)
-  private Date date;
+  private LocalDate date;
   @XmlElementWrapper(name = "tabulka")
   @XmlElement(name = "radek")
   private ArrayList<CnbRate> rateList;
 
-  public Date getDate() {
+  public LocalDate getDate() {
     return date;
   }
 

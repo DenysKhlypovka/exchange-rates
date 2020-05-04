@@ -3,26 +3,26 @@ package org.exchangerates.xml.adapter;
 import org.exchangerates.util.DateFormat;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-public class DateAdapterDot extends XmlAdapter<String, Date> {
+public class DateAdapterDot extends XmlAdapter<String, LocalDate> {
 
-  private static final ThreadLocal<java.text.DateFormat> dateFormat = new ThreadLocal<java.text.DateFormat>() {
+  private static final ThreadLocal<DateTimeFormatter> dateFormat = new ThreadLocal<DateTimeFormatter>() {
 
     @Override
-    protected java.text.DateFormat initialValue() {
-      return new SimpleDateFormat(DateFormat.DD_MM_YYYY_DOT.getPattern());
+    protected DateTimeFormatter initialValue() {
+      return DateTimeFormatter.ofPattern(DateFormat.DD_MM_YYYY_DOT.getPattern());
     }
   };
 
   @Override
-  public Date unmarshal(String v) throws Exception {
-    return dateFormat.get().parse(v);
+  public LocalDate unmarshal(String inputDateStr) {
+    return LocalDate.parse(inputDateStr, dateFormat.get());
   }
 
   @Override
-  public String marshal(Date v) throws Exception {
-    return dateFormat.get().format(v);
+  public String marshal(LocalDate inputDate) {
+    return dateFormat.get().format(inputDate);
   }
 }

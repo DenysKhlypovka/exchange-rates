@@ -26,15 +26,17 @@ public class BankService {
     bankType = Enum.valueOf(BankType.class, bankTypeStr);
   }
 
+  //TODO: fix rates absence handling
   private BankRatesDto getRates(String URL) {
     Class<? extends ExchangeRatesTable> classType = bankType.getTableClass();
-    List<? extends ExchangeRate> rates = Optional.ofNullable(classType.cast(XmlParser.parseFromUrl(URL, classType))).map(ExchangeRatesTable::getRates).orElse(Collections.emptyList());
+    ExchangeRatesTable table = classType.cast(XmlParser.parseFromUrl(URL, classType));
+    List<? extends ExchangeRate> rates = Optional.ofNullable(table).map(ExchangeRatesTable::getRates).orElse(Collections.emptyList());
 
     var ratesMap = Stream.of(Currency.values()).collect(Collectors.toMap(Currency::name, currency -> rates.stream()
         .filter(rate -> rate.getCurrencyCode().toLowerCase().equals(currency.name().toLowerCase()))
         .findFirst().map(ExchangeRate::getRate)
         .orElse(BigDecimal.ZERO)));
-    return new BankRatesDto(ratesMap, bankType);
+    return new BankRatesDto(ratesMap, bankType, table.getDate());
   }
 
   public BankRatesDto getCurrentRates() {

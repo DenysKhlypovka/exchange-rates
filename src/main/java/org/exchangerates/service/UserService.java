@@ -1,7 +1,7 @@
 package org.exchangerates.service;
 
 import org.exchangerates.exception.InvalidLoginDataException;
-import org.exchangerates.model.UserDto;
+import org.exchangerates.dto.UserDto;
 import org.exchangerates.repository.UserRepository;
 import org.exchangerates.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;

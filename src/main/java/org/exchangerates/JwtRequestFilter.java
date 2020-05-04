@@ -1,7 +1,7 @@
 package org.exchangerates;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import org.exchangerates.model.UserDto;
+import org.exchangerates.dto.UserDto;
 import org.exchangerates.service.UserService;
 import org.exchangerates.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;

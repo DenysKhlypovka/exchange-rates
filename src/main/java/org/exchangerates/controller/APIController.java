@@ -1,7 +1,7 @@
 package org.exchangerates.controller;
 
 import org.exchangerates.dto.BankRatesDto;
-import org.exchangerates.model.UserDto;
+import org.exchangerates.dto.UserDto;
 import org.exchangerates.service.BankService;
 import org.exchangerates.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class APIController {
   }
 
   @GetMapping("/password-check/{username}/{password}")
-  public boolean test(@PathVariable String username, @PathVariable String password) {
+  public boolean checkPassword(@PathVariable String username, @PathVariable String password) {
     return userService.checkPassword(new UserDto(username, password));
   }
 }

@@ -4,7 +4,7 @@ import org.exchangerates.model.ExchangeRatesTable;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @XmlRootElement(name = "exchange")
@@ -16,7 +16,7 @@ public class NbuRatesTable implements ExchangeRatesTable {
     return rateList;
   }
 
-  public Date getDate() {
+  public LocalDate getDate() {
     return rateList.stream().findAny().map(NbuRate::getDate).orElse(null);
   }
 }

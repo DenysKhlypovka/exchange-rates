@@ -1,4 +1,4 @@
-package org.exchangerates.model;
+package org.exchangerates.dto;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

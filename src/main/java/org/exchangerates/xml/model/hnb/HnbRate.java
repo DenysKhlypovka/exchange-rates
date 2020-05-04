@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class HnbRate implements ExchangeRate {
@@ -21,7 +22,7 @@ public class HnbRate implements ExchangeRate {
   private BigDecimal rate;
   @XmlAttribute(name = "datum_primjene")
   @XmlJavaTypeAdapter(DateAdapterDash.class)
-  private Date date;
+  private LocalDate date;
 
   public String getCurrencyCode() {
     return currency;
@@ -31,7 +32,7 @@ public class HnbRate implements ExchangeRate {
     return rate.divide(divider, 5, RoundingMode.HALF_UP);
   }
 
-  public Date getDate() {
+  public LocalDate getDate() {
     return date;
   }
 }

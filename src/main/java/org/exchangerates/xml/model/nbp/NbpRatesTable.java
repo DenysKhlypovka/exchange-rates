@@ -2,8 +2,9 @@ package org.exchangerates.xml.model.nbp;
 
 import org.exchangerates.model.ExchangeRatesTable;
 
-import javax.xml.bind.annotation.*;
-import java.util.Date;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import java.time.LocalDate;
 import java.util.List;
 
 @XmlRootElement(name = "ArrayOfExchangeRatesTable")
@@ -15,7 +16,7 @@ public class NbpRatesTable implements ExchangeRatesTable {
     return exchangeRatesTable.getRates();
   }
 
-  public Date getDate() {
+  public LocalDate getDate() {
     return exchangeRatesTable.getDate();
   }
 }

@@ -1,7 +1,7 @@
 package org.exchangerates.util;
 
 import org.exchangerates.model.User;
-import org.exchangerates.model.UserDto;
+import org.exchangerates.dto.UserDto;
 import org.modelmapper.ModelMapper;
 
 import java.util.Optional;

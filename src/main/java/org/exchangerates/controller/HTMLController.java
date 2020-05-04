@@ -1,9 +1,8 @@
 package org.exchangerates.controller;
 
-import org.exchangerates.exception.InvalidLoginDataException;
 import org.exchangerates.model.BankType;
 import org.exchangerates.model.Currency;
-import org.exchangerates.model.UserDto;
+import org.exchangerates.dto.UserDto;
 import org.exchangerates.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

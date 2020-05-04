@@ -2,7 +2,7 @@ package org.exchangerates.controller;
 
 import org.exchangerates.model.JwtRequest;
 import org.exchangerates.model.JwtResponse;
-import org.exchangerates.model.UserDto;
+import org.exchangerates.dto.UserDto;
 import org.exchangerates.service.UserService;
 import org.exchangerates.util.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
