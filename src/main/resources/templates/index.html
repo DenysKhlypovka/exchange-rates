@@ -14,11 +14,11 @@
 
 <body>
 
-<select th:field="*{banks}">
+<select class="ajax-post" th:field="*{banks}">
     <option th:each="bank : ${banks}" th:value="${bank}" th:text="${bank}">
     </option>
 </select>
-
+<input class="ajax-post" type="date">
 <table>
     <tr>
         <td>&nbsp;</td>
@@ -36,20 +36,24 @@
 <script>
     $('select').prop("selectedIndex", -1);
     $(document).ready(function () {
-        $('select').on('change', function () {
-            var bankName = this.value;
-            $.ajax({
-                type: "GET",
-                contentType: "application/json",
-                url: "/bank-data/" + bankName,
-                dataType: 'json',
-                success: function (data) {
-                    $("#bank-type").html(bankName + "/" + data.bankType.currency);
-                    $('.currency-cell[id]').each(function () {
-                        $(this).html(data.rates[this.id]);
-                    })
-                }
-            });
+        $('.ajax-post').on('change', function () {
+            var bankName = $('select.ajax-post>option:selected').text();
+            if (bankName) {
+                var ratesDate = new Date($('input.ajax-post').val());
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8;",
+                    url: "/bank-data/" + bankName,
+                    data: JSON.stringify(ratesDate),
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#bank-type").html(bankName + "/" + data.bankType.currency);
+                        $('.currency-cell[id]').each(function () {
+                            $(this).html(data.rates[this.id]);
+                        })
+                    }
+                });
+            }
         });
     });
 </script>

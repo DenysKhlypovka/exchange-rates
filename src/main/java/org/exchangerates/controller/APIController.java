@@ -5,9 +5,10 @@ import org.exchangerates.model.UserDto;
 import org.exchangerates.service.BankService;
 import org.exchangerates.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
 public class APIController {
@@ -16,10 +17,10 @@ public class APIController {
   @Autowired
   private BankService bankService;
 
-  @GetMapping("/bank-data/{bankType}")
-  public BankRatesDto getData(@PathVariable String bankType) {
+  @PostMapping("/bank-data/{bankType}")
+  public BankRatesDto getData(@PathVariable String bankType, @RequestBody(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate localDate) {
     bankService.setBankType(bankType);
-    return bankService.getCurrentRates();
+    return bankService.getRatesForDate(localDate);
   }
 
   @GetMapping("/password-check/{username}/{password}")

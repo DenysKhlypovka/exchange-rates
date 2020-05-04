@@ -50,6 +50,6 @@ public class BankService {
   }
 
   public BankRatesDto getRatesForDate(LocalDate date) {
-    return getRates(String.format(bankType.getRatesForDateUrl(), TextUtil.localDateToString(date, bankType.getDateFormat().getPattern())));
+    return Optional.ofNullable(date).map(_date -> getRates(String.format(bankType.getRatesForDateUrl(), TextUtil.localDateToString(_date, bankType.getDateFormat().getPattern())))).orElse(getCurrentRates());
   }
 }
