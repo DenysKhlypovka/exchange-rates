@@ -1,5 +1,6 @@
 package org.exchangerates;
 
+import org.exchangerates.dto.BankRatesDto;
 import org.exchangerates.model.BankType;
 import org.exchangerates.service.BankService;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,9 @@ class BankServiceTest {
   void allBanksShouldReturnCurrentRates() {
     Stream.of(BankType.values()).map(bankType -> {
       bankService.setBankType(bankType.name());
-      return bankService.getCurrentRates();
+      BankRatesDto rates = bankService.getCurrentRates();
+      System.out.print(rates.getDate() + "\t");
+      return rates;
     }).forEach(bankRatesDto -> System.out.println(bankRatesDto.getBankType().name() + ": " + bankRatesDto.getRates()));
   }
 

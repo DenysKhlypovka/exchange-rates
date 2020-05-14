@@ -1,20 +1,19 @@
 package org.exchangerates.xml.model.nbp;
 
-import org.exchangerates.model.ExchangeRatesTable;
-import org.exchangerates.xml.adapter.DateAdapterDot;
+import org.exchangerates.xml.adapter.DateAdapterDash;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class NbpXmlRatesTable implements ExchangeRatesTable {
+public class NbpXmlRatesTable {
   @XmlElement(name = "EffectiveDate")
-  @XmlJavaTypeAdapter(DateAdapterDot.class)
+  @XmlJavaTypeAdapter(DateAdapterDash.class)
   private LocalDate effectiveDate;
+
   @XmlElementWrapper(name = "Rates")
   @XmlElement(name = "Rate")
   private ArrayList<NbpRate> rateList;

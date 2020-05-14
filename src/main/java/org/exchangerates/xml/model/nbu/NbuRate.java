@@ -11,8 +11,10 @@ import java.time.LocalDate;
 public class NbuRate implements ExchangeRate {
   @XmlElement(name = "cc")
   private String currency;
+
   @XmlElement(name = "rate")
   private BigDecimal rate;
+
   @XmlElement(name = "exchangedate")
   @XmlJavaTypeAdapter(DateAdapterDot.class)
   private LocalDate date;

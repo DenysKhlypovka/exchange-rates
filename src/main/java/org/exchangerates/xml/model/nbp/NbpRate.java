@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 public class NbpRate implements ExchangeRate {
   @XmlElement(name="Code")
   private String currency;
+
   @XmlElement(name="Mid")
   private BigDecimal rate;
 

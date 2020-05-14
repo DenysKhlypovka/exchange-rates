@@ -1,6 +1,5 @@
 package org.exchangerates.xml;
 
-import org.exchangerates.xml.adapter.DateAdapterDash;
 import org.xml.sax.InputSource;
 
 import javax.xml.bind.JAXBContext;
@@ -12,7 +11,6 @@ public class XmlParser {
       var jaxbContext = JAXBContext.newInstance(parameterClass);
       var url = new URL(urlStr);
       var jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-      jaxbUnmarshaller.setAdapter(DateAdapterDash.class, new DateAdapterDash());
       return parameterClass.cast(jaxbUnmarshaller.unmarshal(new InputSource(url.openStream())));
     } catch (Exception e) {
       e.printStackTrace();

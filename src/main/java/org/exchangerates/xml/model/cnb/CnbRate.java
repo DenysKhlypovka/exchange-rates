@@ -11,8 +11,10 @@ import java.math.RoundingMode;
 public class CnbRate implements ExchangeRate {
   @XmlAttribute(name="kod")
   private String currency;
+
   @XmlAttribute(name="mnozstvi")
   private BigDecimal divider;
+
   @XmlAttribute(name="kurz")
   @XmlJavaTypeAdapter(NumberWithCommaAdapter.class)
   private BigDecimal rate;

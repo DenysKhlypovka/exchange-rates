@@ -10,13 +10,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 
 @XmlRootElement(name = "kurzy")
 public class CnbRatesTable implements ExchangeRatesTable {
   @XmlAttribute(name = "datum")
   @XmlJavaTypeAdapter(DateAdapterDot.class)
   private LocalDate date;
+
   @XmlElementWrapper(name = "tabulka")
   @XmlElement(name = "radek")
   private ArrayList<CnbRate> rateList;
