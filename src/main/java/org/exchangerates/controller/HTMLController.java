@@ -26,7 +26,7 @@ public class HTMLController {
     return "index";
   }
 
-  @GetMapping("/user/registration")
+  @GetMapping("/user/register")
   public String getData(Model model) {
     model.addAttribute("userDto", new UserDto());
     return "register";
