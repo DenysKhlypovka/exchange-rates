@@ -17,6 +17,10 @@ public class BankRatesDto {
     this.date = date;
   }
 
+  public static BankRatesDto getEmptyInstance(LocalDate date) {
+    return new BankRatesDto(null, null, date);
+  }
+
   public Map<String, BigDecimal> getRates() {
     return rates;
   }

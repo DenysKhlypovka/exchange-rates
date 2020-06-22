@@ -18,8 +18,8 @@ class BankServiceTest {
   @Test
   void allBanksShouldReturnCurrentRates() {
     Stream.of(BankType.values()).map(bankType -> {
-      bankService.setBankType(bankType.name());
-      BankRatesDto rates = bankService.getCurrentRates();
+      bankService.setBankType(bankType);
+      BankRatesDto rates = bankService.getRatesForDate(null);
       System.out.print(rates.getDate() + "\t");
       return rates;
     }).forEach(bankRatesDto -> System.out.println(bankRatesDto.getBankType().name() + ": " + bankRatesDto.getRates()));
@@ -30,7 +30,7 @@ class BankServiceTest {
     LocalDate date = LocalDate.now().minusMonths(1);
 
     Stream.of(BankType.values()).map(bankType -> {
-      bankService.setBankType(bankType.name());
+      bankService.setBankType(bankType);
       return bankService.getRatesForDate(date);
     }).forEach(bankRatesDto -> System.out.println(bankRatesDto.getBankType().name() + ": " + bankRatesDto.getRates()));
   }
@@ -41,7 +41,7 @@ class BankServiceTest {
     LocalDate dateTo = LocalDate.now().minusWeeks(2);
 
     Stream.of(BankType.values()).map(bankType -> {
-      bankService.setBankType(bankType.name());
+      bankService.setBankType(bankType);
       return bankService.getRatesForPeriod(dateFrom, dateTo);
     }).flatMap(Collection::stream).forEach(bankRatesDto -> System.out.println(bankRatesDto.getBankType().name() + ": " + bankRatesDto.getRates()));
   }

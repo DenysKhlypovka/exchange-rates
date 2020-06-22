@@ -11,12 +11,14 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
 public class XlsExportService {
-  private final String SINGLE_BANK_RATES_TEMPLATE_PATH = "/static/xls/templates/rates.xlsx";
-  private final String MULTIPLE_BANKS_RATES_TEMPLATE_PATH = "/static/xls/templates/rates-multiple-banks.xlsx";
+  private final String XML_TEMPLATES_PATH = "/static/xls/templates";
+  private final String SINGLE_BANK_RATES_TEMPLATE_PATH = XML_TEMPLATES_PATH + "/rates.xlsx";
+  private final String MULTIPLE_BANKS_RATES_TEMPLATE_PATH = XML_TEMPLATES_PATH + "/rates-multiple-banks.xlsx";
   private final String TEMP_FILE_PREFIX = "report";
   private final String TEMP_FILE_SUFFIX = ".xlsx";
 
@@ -35,7 +37,7 @@ public class XlsExportService {
       try (OutputStream os = new FileOutputStream(getTempFile())) {
         Context context = PoiTransformer.createInitialContext();
         context.putVar("bankRates", bankRatesList);
-        context.putVar("sheetNames", bankRatesList.stream().flatMap(Collection::stream).map(BankRatesDto::getBankType).map(BankType::name).distinct().collect(Collectors.toList()));
+        context.putVar("sheetNames", bankRatesList.stream().flatMap(Collection::stream).map(BankRatesDto::getBankType).filter(Objects::nonNull).map(BankType::name).distinct().collect(Collectors.toList()));
         JxlsHelper.getInstance().processTemplate(is, os, context);
       }
     }

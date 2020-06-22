@@ -13,7 +13,7 @@ public class XmlParser {
       var jaxbUnmarshaller = jaxbContext.createUnmarshaller();
       return parameterClass.cast(jaxbUnmarshaller.unmarshal(new InputSource(url.openStream())));
     } catch (Exception e) {
-      e.printStackTrace();
+      //e.printStackTrace();
     }
     return null;
   }

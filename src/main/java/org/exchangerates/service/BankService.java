@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,21 +23,25 @@ public class BankService {
     bankType = Enum.valueOf(BankType.class, bankTypeStr);
   }
 
-  //TODO: fix rates absence handling
-  private BankRatesDto getRates(String URL) {
-    Class<? extends ExchangeRatesTable> classType = bankType.getTableClass();
-    ExchangeRatesTable table = classType.cast(XmlParser.parseFromUrl(URL, classType));
-    List<? extends ExchangeRate> rates = Optional.ofNullable(table).map(ExchangeRatesTable::getRates).orElse(Collections.emptyList());
+  public void setBankType(BankType bankType) {
+    this.bankType = bankType;
+  }
 
-    var ratesMap = Stream.of(Currency.values()).collect(Collectors.toMap(Currency::name, currency -> rates.stream()
+  public BankRatesDto getRatesForDate(LocalDate date) {
+    String urlStr = generateUrlStr(date);
+
+    Class<? extends ExchangeRatesTable> classType = bankType.getTableClass();
+    ExchangeRatesTable table = classType.cast(XmlParser.parseFromUrl(urlStr, classType));
+
+    if (Objects.isNull(table)) {
+      return BankRatesDto.getEmptyInstance(date);
+    }
+
+    var ratesMap = Stream.of(Currency.values()).collect(Collectors.toMap(Currency::name, currency -> table.getRates().stream()
         .filter(rate -> rate.getCurrencyCode().toLowerCase().equals(currency.name().toLowerCase()))
         .findFirst().map(ExchangeRate::getRate)
         .orElse(BigDecimal.ZERO)));
     return new BankRatesDto(ratesMap, bankType, table.getDate());
-  }
-
-  public BankRatesDto getCurrentRates() {
-    return getRates(bankType.getCurrentRatesUrl());
   }
 
   public List<BankRatesDto> getRatesForPeriod(LocalDate from, LocalDate to) {
@@ -51,7 +52,7 @@ public class BankService {
     return rates;
   }
 
-  public BankRatesDto getRatesForDate(LocalDate date) {
-    return Optional.ofNullable(date).map(_date -> getRates(String.format(bankType.getRatesForDateUrl(), TextUtil.localDateToString(_date, bankType.getDateFormat().getPattern())))).orElse(getCurrentRates());
+  private String generateUrlStr(LocalDate date) {
+    return Objects.isNull(date) ? bankType.getCurrentRatesUrl() : String.format(bankType.getRatesForDateUrl(), TextUtil.localDateToString(date, bankType.getDateFormat().getPattern()));
   }
 }

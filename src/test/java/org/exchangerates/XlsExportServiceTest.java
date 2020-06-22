@@ -23,14 +23,14 @@ public class XlsExportServiceTest {
 
   @Test
   void reportShouldBeGenerated() throws IOException {
-    bankService.setBankType("NBU");
+    bankService.setBankType(BankType.NBU);
     xlsExportService.generateReportForBank(bankService.getRatesForPeriod(LocalDate.now().minusWeeks(2), LocalDate.now().minusWeeks(1)));
   }
 
   @Test
   void reportForMultipleBanksShouldBeGenerated() throws IOException {
     List<List<BankRatesDto>> bankRates = Stream.of(BankType.values()).map(bankType -> {
-      bankService.setBankType(bankType.name());
+      bankService.setBankType(bankType);
       return bankService.getRatesForPeriod(LocalDate.now().minusDays(10), LocalDate.now().minusDays(6));
     }).collect(Collectors.toList());
 
