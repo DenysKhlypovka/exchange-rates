@@ -2,23 +2,24 @@ package org.exchangerates;
 
 import org.exchangerates.service.EncodingService;
 import org.exchangerates.util.TextUtil;
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.MockitoJUnitRunner;
 
-@SpringBootTest
-class EncodingServiceTest {
-  @Autowired
+@RunWith(MockitoJUnitRunner.class)
+public class EncodingServiceTest {
+  @InjectMocks
   private EncodingService encodingService;
 
   @Test
-  void encodingServiceShouldEncode() {
+  public void encodingServiceShouldEncode() {
     Assertions.assertNotNull(encodingService.encode(TextUtil.generateRandomPassword()));
   }
 
   @Test
-  void encodingServiceSourceAndDecodedPasswordShouldMatch() {
+  public void encodingServiceSourceAndDecodedPasswordShouldMatch() {
     String someString = TextUtil.generateRandomPassword();
     Assertions.assertTrue(encodingService.checkPassword(someString, encodingService.encode(someString)));
   }

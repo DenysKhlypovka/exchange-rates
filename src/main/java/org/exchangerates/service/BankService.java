@@ -27,6 +27,10 @@ public class BankService {
     this.bankType = bankType;
   }
 
+  public BankRatesDto getRatesForDate() {
+    return getRatesForDate(null);
+  }
+
   public BankRatesDto getRatesForDate(LocalDate date) {
     String urlStr = generateUrlStr(date);
 
@@ -34,13 +38,13 @@ public class BankService {
     ExchangeRatesTable table = classType.cast(XmlParser.parseFromUrl(urlStr, classType));
 
     if (Objects.isNull(table)) {
-      return BankRatesDto.getEmptyInstance(date);
+      return BankRatesDto.getEmptyInstance(date, bankType);
     }
 
     var ratesMap = Stream.of(Currency.values()).collect(Collectors.toMap(Currency::name, currency -> table.getRates().stream()
-        .filter(rate -> rate.getCurrencyCode().toLowerCase().equals(currency.name().toLowerCase()))
-        .findFirst().map(ExchangeRate::getRate)
-        .orElse(BigDecimal.ZERO)));
+            .filter(rate -> rate.getCurrencyCode().toLowerCase().equals(currency.name().toLowerCase()))
+            .findFirst().map(ExchangeRate::getRate)
+            .orElse(BigDecimal.ZERO)));
     return new BankRatesDto(ratesMap, bankType, table.getDate());
   }
 

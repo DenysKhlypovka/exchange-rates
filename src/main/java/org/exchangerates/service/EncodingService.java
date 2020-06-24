@@ -4,14 +4,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-
 @Service
 public class EncodingService {
-  private PasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
-  @PostConstruct
-  private void init() {
+  public EncodingService() {
     passwordEncoder = new BCryptPasswordEncoder();
   }
 
