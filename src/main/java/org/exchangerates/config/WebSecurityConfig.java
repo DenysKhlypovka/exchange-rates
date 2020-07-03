@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     httpSecurity.csrf().disable().authorizeRequests()
         .antMatchers("/home").permitAll()
         .antMatchers("/user/**").permitAll()
-        .antMatchers("/bank-data/**").permitAll()
+        .antMatchers("/banks/**").permitAll()
         .antMatchers("/authenticate").permitAll().anyRequest().authenticated()
         .and().exceptionHandling()
         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
