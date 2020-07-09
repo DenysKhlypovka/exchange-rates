@@ -24,6 +24,7 @@ public class UserDto implements UserDetails {
   @Email(message = "Email should be valid")
   private String email;
   private LocalDateTime createdDate;
+  private boolean subscribedToNewsletter;
 
   public UserDto() {
   }
@@ -31,12 +32,12 @@ public class UserDto implements UserDetails {
   public UserDto(String username, String password) {
     this.username = username;
     this.password = password;
+    this.subscribedToNewsletter = true;
   }
 
-  public UserDto(String username, String password, String email) {
-    this.username = username;
-    this.password = password;
+  public UserDto(String email) {
     this.email = email;
+    this.subscribedToNewsletter = true;
   }
 
   public Long getId() {
@@ -77,6 +78,14 @@ public class UserDto implements UserDetails {
 
   public void setCreatedDate(LocalDateTime createdDate) {
     this.createdDate = createdDate;
+  }
+
+  public boolean isSubscribedToNewsletter() {
+    return subscribedToNewsletter;
+  }
+
+  public void setSubscribedToNewsletter(boolean subscribedToNewsletter) {
+    this.subscribedToNewsletter = subscribedToNewsletter;
   }
 
   public Collection<? extends GrantedAuthority> getAuthorities() {

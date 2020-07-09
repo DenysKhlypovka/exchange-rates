@@ -41,26 +41,32 @@ public class UserRepository {
   }
 
   public User getUser(String username) {
-    try (Session session = hibernateSessionService.getSessionFactory(ENTITY_CLASS).openSession()) {
-      Query query = session.createQuery("FROM " + TABLE_NAME + " WHERE username=:username", ENTITY_CLASS);
-      query.setParameter("username", username);
-      return ((User) query.list().stream().findFirst().orElse(null));
-    }
+    return getUsersByFieldCondition(Field.username, username).stream().findFirst().orElse(null);
   }
 
   public User getUser(Long id) {
+    return getUsersByFieldCondition(Field.id, id).stream().findFirst().orElse(null);
+  }
+
+  public List<User> getSubscribedToNewsletterUsers() {
+    return getUsersByFieldCondition(Field.subscribed_to_newsletter, true);
+  }
+
+  private List<User> getUsersByFieldCondition(Field field, Object conditionValue) {
     try (Session session = hibernateSessionService.getSessionFactory(ENTITY_CLASS).openSession()) {
-      Query query = session.createQuery("FROM " + TABLE_NAME + " WHERE id=:id", ENTITY_CLASS);
-      query.setParameter("id", id);
-      return ((User) query.list().stream().findFirst().orElse(null));
+
+      Query query = session.createQuery("FROM " + TABLE_NAME + " WHERE " + constructHibernateCondition(field), ENTITY_CLASS);
+      query.setParameter(field.name(), conditionValue);
+      return query.list();
     }
   }
+
+  protected enum Field {
+    id, username, subscribed_to_newsletter;
+  }
+
+  public String constructHibernateCondition(Field field) {
+    var condition = field.name();
+    return condition + "=:" + condition;
+  }
 }
-//CREATE TABLE user_data (
-//   ID serial PRIMARY KEY,
-//   username VARCHAR (255) NOT NULL,
-//   password VARCHAR (255) NOT NULL,
-//	 created_date TIMESTAMP NOT NULL,
-//    email varchar(50)
-//);
-//ALTER TABLE user_data ADD CONSTRAINT unique_login UNIQUE (username);

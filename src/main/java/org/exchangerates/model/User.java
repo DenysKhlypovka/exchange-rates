@@ -23,6 +23,9 @@ public class User {
   @Column(name = "created_date")
   private LocalDateTime created_date;
 
+  @Column(name = "subscribed_to_newsletter")
+  private boolean subscribedToNewsletter;
+
   public User() {
     created_date = LocalDateTime.now();
   }
@@ -65,5 +68,13 @@ public class User {
 
   public void setCreated_date(LocalDateTime created_date) {
     this.created_date = created_date;
+  }
+
+  public boolean isSubscribedToNewsletter() {
+    return subscribedToNewsletter;
+  }
+
+  public void setSubscribedToNewsletter(boolean subscribedToNewsletter) {
+    this.subscribedToNewsletter = subscribedToNewsletter;
   }
 }

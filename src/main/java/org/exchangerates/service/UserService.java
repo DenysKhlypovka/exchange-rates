@@ -39,6 +39,10 @@ public class UserService implements UserDetailsService {
     return Converter.convertToDto(userRepository.getUser(id));
   }
 
+  public List<UserDto> getSubscribedToNewsletterUsers() {
+    return userRepository.getSubscribedToNewsletterUsers().stream().map(Converter::convertToDto).collect(Collectors.toList());
+  }
+
   public boolean checkPassword(UserDto userDto) {
     return encodingService.checkPassword(userDto.getPassword(), loadUserByUsername(userDto.getUsername()).getPassword());
   }

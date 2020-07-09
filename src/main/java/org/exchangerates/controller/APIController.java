@@ -15,25 +15,25 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @RestController
-@RequestMapping("/banks")
+@RequestMapping("/api")
 public class APIController {
   @Autowired
   private UserService userService;
   @Autowired
   private BankService bankService;
 
-  @PostMapping("/bank-data/{bankType}")
+  @PostMapping("/banks/bank-data/{bankType}")
   public BankRatesDto getData(@PathVariable String bankType, @RequestBody(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate localDate) {
     bankService.setBankType(bankType);
     return bankService.getRatesForDate(localDate);
   }
 
-  @GetMapping("/bank-types")
+  @GetMapping("/banks/bank-types")
   public Map<String, String> getBankTypesAndCurrencies() {
     return Stream.of(BankType.values()).collect(Collectors.toMap(Enum::name, bankType -> bankType.getCurrency().name()));
   }
 
-  @GetMapping("/password-check/{username}/{password}")
+  @GetMapping("/user/password-check/{username}/{password}")
   public boolean checkPassword(@PathVariable String username, @PathVariable String password) {
     return userService.checkPassword(new UserDto(username, password));
   }
